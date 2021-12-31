@@ -13,6 +13,9 @@ import javax.mail.internet.MimeMessage;
 import java.util.Arrays;
 import java.util.Properties;
 
+/**
+ * @author AlexanderGuo
+ */
 @Component
 public class EmailSender {
 

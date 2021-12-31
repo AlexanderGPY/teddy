@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
+/**
+ * @author AlexanderGuo
+ */
 @Service
 public class YarnService {
 

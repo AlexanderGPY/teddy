@@ -17,15 +17,18 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author AlexanderGuo
+ */
 @Component
 public class RestartManager implements ApplicationRunner {
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private JobService jobService;
 
-    private ScheduledExecutorService scheduledThreadPool = new ScheduledThreadPoolExecutor(1,
+    private final ScheduledExecutorService scheduledThreadPool = new ScheduledThreadPoolExecutor(1,
             new BasicThreadFactory.Builder().namingPattern("restart-pool-%d").daemon(true).build());
 
     @Override

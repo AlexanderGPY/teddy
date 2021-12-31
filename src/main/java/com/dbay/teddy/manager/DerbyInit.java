@@ -9,7 +9,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * derby这里有一个bug，就是每次字段有修改时，必须要重新删除数据库建库，建表。但是在linux环境下，自动init数据库失败。
+ * derby这里有一个bug，但是在linux环境下，自动init数据库失败。
  * @author AlexanderGuo
  */
 @Component
