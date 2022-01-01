@@ -93,7 +93,7 @@ $(function() {
                 html += "<tr id='"+data[i].id+"' "+taskStyle(data[i].state)+">";
                 html += "<td>"+data[i].name+"</td>";
                 html += "<td><button type='button' class='btn btn-default command'>查看配置</button></td>";
-                html += "<td><a href='https://192.168.248.54:30002/gateway/emr/yarn/proxy/"+data[i].appId+"' target='_blank'>"+data[i].appId+"</a></td>";
+                html += "<td><a href='https://49.232.228.189:30002/gateway/emr/yarn/proxy/"+data[i].appId+"' target='_blank'>"+data[i].appId+"</a></td>";
                 html += "<td>"+data[i].yarnQueue+"</td>";
                 html += "<td>"+data[i].state+"</td>";
                 html += "<td><button type='button' class='btn btn-default delete'>删除</button></td>";

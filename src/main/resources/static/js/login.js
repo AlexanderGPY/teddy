@@ -12,7 +12,7 @@ loopy();
             }
         }
         if(!isCancle){
-//          alert("邀请码输入正确了，欢迎您的光临！");
+          window.location.href = "./page/taskm/monitor.html";
         }else{
             location.replace("about:blank");
             window.close();
