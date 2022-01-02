@@ -34,7 +34,6 @@ public class LoginController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public Response login(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
         logger.info("收到登录请求：" + req.getParameter("userName"));
-        System.out.println("qqqqqqqqqqqqqqqqqqqqq");
         String userName = req.getParameter("userName");
         String password = req.getParameter("password");
         String token = "";
@@ -56,7 +55,6 @@ public class LoginController {
     @RequestMapping(value = "checkToken", method = RequestMethod.POST)
     public Response checkToken(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
         logger.info("收到登录请求：检查token");
-        System.out.println("xxxxxxxxxxxxxxxxxxx");
         String token = "";
 //        Cookie[] cookies = req.getCookies();
 //        if (cookies != null && cookies.length > 0) {
