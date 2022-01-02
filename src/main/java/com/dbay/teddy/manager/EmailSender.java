@@ -65,10 +65,10 @@ public class EmailSender {
             message.setText(text);
             message.addRecipients(Message.RecipientType.TO, addresses);
             // transport send
-//            transport.connect(TeddyConf.get("mail.host"), TeddyConf.get("mail.from"), TeddyConf.get("mail.passwd"));
-//            transport.sendMessage(message, message.getAllRecipients());
-//            transport.close();
-            Transport.send(message);
+            transport.connect(TeddyConf.get("mail.host"), TeddyConf.get("mail.from"), TeddyConf.get("mail.passwd"));
+            transport.sendMessage(message, message.getAllRecipients());
+            transport.close();
+//            Transport.send(message);
             logger.info("email success：-->" + emails + "[" + subject + "]" + text);
           
 

@@ -41,7 +41,7 @@ public class Application{
 
             TeddyConf.setProperties(properties);
         } else {
-            TeddyConf.setProperties(loadProperties("C:\\Users\\dell\\Desktop\\Teddy-master\\conf\\teddy.properties"));
+            TeddyConf.setProperties(loadProperties("D:\\IdeaProjects\\GitHubProjects\\teddy\\conf\\teddy.properties"));
         }
 
         SpringApplication.run(Application.class, args);

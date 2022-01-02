@@ -1,21 +1,25 @@
-loopy();
+ loopy();
     function loopy() {
-        var sWord = prompt("请输入密码");
-        var password = "welove520";
-        var isCancle = false;
-        while(sWord!=password){
-            if(sWord==null){
-                isCancle = true;
-                break;
-            }else{
-                sWord = prompt("密码输入错误");
-            }
-        }
-        if(!isCancle){
-          window.location.href = "./page/taskm/monitor.html";
-        }else{
-            location.replace("about:blank");
-            window.close();
-        }
+        var userName = "welove"
+        var password = prompt("密码","welove520");
+        data = {}
+
+         $.ajax({
+             url: "/teddy/login?userName="+userName+"&password="+password,
+             type: "POST",
+             processData: false,
+             contentType: false,
+             async: false,
+             data: data,
+             success: function(result) {
+                if(result.state == "success"){
+                    window.location.href = "./page/taskm/monitor.html";
+                    document.cookie = "token="+result.data+ ";expires=10"+"; path=/";
+                } else{
+                    window.location.href = "./login.html";
+                }
+             }
+         });
     }
+
 
