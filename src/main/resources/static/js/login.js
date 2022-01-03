@@ -1,7 +1,7 @@
  loopy();
     function loopy() {
         var userName = "welove"
-        var password = prompt("密码","welove520");
+        var password = prompt("请输入密码");
         data = {}
 
          $.ajax({
@@ -14,7 +14,7 @@
              success: function(result) {
                 if(result.state == "success"){
                     window.location.href = "./page/taskm/monitor.html";
-                    document.cookie = "token="+result.data+ ";expires=10"+"; path=/";
+                    document.cookie = "token="+result.data+ ";expires="+"; path=/";
                 } else{
                     window.location.href = "./login.html";
                 }
