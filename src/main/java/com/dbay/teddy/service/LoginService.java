@@ -14,7 +14,6 @@ import java.net.URLDecoder;
  */
 
 
-
 @Service
 public class LoginService {
     @Autowired
@@ -24,7 +23,7 @@ public class LoginService {
     private static final String TOKEN = "it is just a token";
 
 
-    public boolean  checkPassword(String userName, String password) {
+    public boolean checkPassword(String userName, String password) {
 
         return USERNAME.equals(userName) && PASSWORD.equals(password);
     }
@@ -33,17 +32,21 @@ public class LoginService {
         return TOKEN.equals(token);
     }
 
-    public String createToken(){
+    public String createToken() {
         return TokenManager.createToken();
     }
 
     public String getCookieValue(HttpServletRequest request, String cookieName, boolean isDecoder) {
-        String cookie=request.getHeader("cookie");
-        String[] cookKeys = cookie.split(";");
+        String cookie = request.getHeader("cookie");
         if (cookieName == null) {
             return null;
         }
+        if (cookie == null) {
+            return null;
+        }
         String retValue = null;
+        String[] cookKeys = cookie.split(";");
+
         try {
             for (String cookKey : cookKeys) {
                 String[] rawCookieNameAndValuePair = cookKey.split("=");

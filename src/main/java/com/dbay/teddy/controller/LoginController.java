@@ -53,7 +53,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "checkToken", method = RequestMethod.POST)
-    public Response checkToken(HttpServletRequest req, HttpServletResponse resp) throws UnsupportedEncodingException {
+    public Response checkToken(HttpServletRequest req, HttpServletResponse resp) {
         logger.info("收到登录请求：检查token");
         String token = "";
 //        Cookie[] cookies = req.getCookies();
