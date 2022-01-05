@@ -67,16 +67,16 @@ public class LoginController {
 //            }
 //        }
 
-        //通过header拿到cookie
+        //通过header拿到TokenCookie
         token = loginService.getCookieValue(req, "token",true);
 
         //检查token
         if (loginService.checkToken(token)) {
-            logger.info("登录成功：" + token);
+            logger.info("token登录成功：" + token);
             return Response.SUCCESS("success");
         }
 
-        logger.error("登录失败：" + token);
+        logger.error("token登录失败:" + token);
         return Response.ERROR("401");
     }
 }

@@ -41,7 +41,9 @@ public class Application{
 
             TeddyConf.setProperties(properties);
         } else {
-            TeddyConf.setProperties(loadProperties("D:\\IdeaProjects\\GitHubProjects\\teddy\\conf\\teddy.properties"));
+            String localPathHome = "D:\\IdeaProjects\\GitHubProjects\\teddy\\conf\\teddy.properties";
+            String localPathCompany = "D:\\ideaProject\\GitHubProject\\teddy\\conf\\teddy.properties";
+            TeddyConf.setProperties(loadProperties(localPathCompany));
         }
 
         SpringApplication.run(Application.class, args);

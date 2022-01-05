@@ -28,15 +28,42 @@ public class JobService {
     @Autowired
     private JobMapper jobMapper;
 
-    public Boolean start(Job job){
+    public Boolean start(Job job) {
         Job handlerJob;
         try {
             handlerJob = launch(job);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return false;
         }
         save(handlerJob);
+        return true;
+    }
+
+    public Boolean reconfiguring(Job job) {
+        try {
+            if ("".equals(job.getAppId())) {
+                return false;
+            }
+            Job oldJob = findOneWithAppId(job.getAppId());
+            if (Objects.nonNull(oldJob)) {
+                job.setId(oldJob.getId());
+                delete(oldJob.getId());
+            }
+            String settings = job.getConfig();
+            for (String setting : StringUtils.splitByWholeSeparator(settings, ";")) {
+                String[] strings = StringUtils.split(setting, "=");
+                //从Config中提取Yarn队列到Job实例
+                if ("spark.yarn.queue".equals(strings[0])) {
+                    job.setYarnQueue(strings[1]);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+            return false;
+        }
+        updateConfigs(job);
         return true;
     }
 
@@ -46,18 +73,18 @@ public class JobService {
                 .setAppName(job.getName())
                 .setSparkHome(TeddyConf.get("spark.home"))
                 .setMaster(job.getMaster())
-                .setAppResource(TeddyConf.get("lib.home")+job.getAppResource())
+                .setAppResource(TeddyConf.get("lib.home") + job.getAppResource())
                 .setMainClass(job.getMainClass())
                 .addAppArgs(job.getArgs())
                 .setDeployMode(job.getDeployMode());
 
         String settings = job.getConfig();
-        for(String setting : StringUtils.splitByWholeSeparator(settings,";")){
+        for (String setting : StringUtils.splitByWholeSeparator(settings, ";")) {
             String[] strings = StringUtils.split(setting, "=");
-            launcher.setConf(strings[0],strings[1]);
+            launcher.setConf(strings[0], strings[1]);
 
             //设置yarn队列
-            if("spark.yarn.queue".equals(strings[0])){
+            if ("spark.yarn.queue".equals(strings[0])) {
                 job.setYarnQueue(strings[1]);
             }
 
@@ -67,16 +94,16 @@ public class JobService {
         launcher.redirectError(new File(TeddyConf.get("log.file")));
 
 
-        logger.warn("构建："+ JSON.toJSONString(launcher));
+        logger.warn("构建：" + JSON.toJSONString(launcher));
         SparkAppHandle handler = launcher.startApplication();
 
         // 阻塞登到有id再返回
-        while(handler.getAppId()==null){
+        while (handler.getAppId() == null) {
 
-            logger.warn("waiting for appId: "+handler.getAppId()+" "+handler.getState());
+            logger.warn("waiting for appId: " + handler.getAppId() + " " + handler.getState());
 
-            if(handler.getState().isFinal()){
-                throw new RuntimeException("handler "+handler.getState());
+            if (handler.getState().isFinal()) {
+                throw new RuntimeException("handler " + handler.getState());
             }
 
             try {
@@ -88,30 +115,30 @@ public class JobService {
 
         job.setAppId(handler.getAppId());
 
-        logger.warn("Get appId:"+handler.getAppId());
+        logger.warn("Get appId:" + handler.getAppId());
         return job;
     }
 
-    public void autoRestart(Job job){
+    public void autoRestart(Job job) {
         Job handlerJob = new Job();
         try {
             handlerJob = launch(job);
             //成功的时候，回复重启数量
             handlerJob.setRetries(3);
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            handlerJob.setRetries(handlerJob.getRetries()-1);
+            handlerJob.setRetries(handlerJob.getRetries() - 1);
         }
         update(handlerJob);
     }
 
-    public Boolean restart(Job job){
-        boolean result  = false;
+    public Boolean restart(Job job) {
+        boolean result = false;
         Job handlerJob = new Job();
         try {
             handlerJob = launch(job);
             result = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             logger.error(e.getMessage());
         }
         update(handlerJob);
@@ -119,7 +146,7 @@ public class JobService {
     }
 
     public Boolean stop(Job job) {
-        String command = "yarn application -kill "+job.getAppId();
+        String command = "yarn application -kill " + job.getAppId();
         try {
             Process process = Runtime.getRuntime().exec(command);
             process.waitFor();
@@ -127,19 +154,20 @@ public class JobService {
             e.printStackTrace();
             return false;
         }
-        logger.info("kill "+job.getAppId());
+        logger.info("kill " + job.getAppId());
         return true;
     }
 
     /**
      * 创建task表
      */
-    public void create(){
+    public void create() {
         jobMapper.create();
     }
 
     /**
      * 查询表的个数，用于判断表是否存在
+     *
      * @return 如果表不存在则为-1
      */
     public Integer count() {
@@ -150,32 +178,42 @@ public class JobService {
         }
     }
 
-    public List<Job> list(Integer page, Integer size){
-        return jobMapper.list((page-1)*size,size);
+    public List<Job> list(Integer page, Integer size) {
+        return jobMapper.list((page - 1) * size, size);
     }
 
-    public List<Job> findAllWithAppId(){
+    public List<Job> findAllWithAppId() {
         return jobMapper.findAllWithAppId();
     }
 
-    public void save(Job job){
+
+    public Job findOneWithAppId(String appId) {
+        return jobMapper.findOneWithAppId(appId);
+    }
+
+    public void save(Job job) {
         jobMapper.save(job);
     }
 
-    public Job findOne(Integer id){
+    public Job findOne(Integer id) {
         return jobMapper.findOne(id);
     }
 
-    public void delete(Integer id){
+    public void delete(Integer id) {
         jobMapper.delete(id);
     }
 
-    public Boolean stop(Integer id){
+    public Boolean stop(Integer id) {
         Job job = jobMapper.findOne(id);
         return stop(job);
     }
 
-    public void update(Job job){
+    public void update(Job job) {
         jobMapper.update(job);
     }
+
+    public void updateConfigs(Job job) {
+        jobMapper.updateConfigs(job);
+    }
+
 }

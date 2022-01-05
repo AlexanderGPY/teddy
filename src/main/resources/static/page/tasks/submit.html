@@ -40,19 +40,25 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">名字</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="c2NameInput" type="text" value="Project Name">
+                    <input class="form-control" id="c2NameInput" type="text"  placeholder="任务名称">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">jar包</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="c2JarInput" type="text" value="Spark Jars">
+                    <input class="form-control" id="c2JarInput" type="text" placeholder="SparkJob的Jar包 例如：Streaming.jar">
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">主函数</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="c2ClassInput" type="text" value="Path of main class">
+                    <input class="form-control" id="c2ClassInput" type="text"  placeholder="主函数的路径 例如：com.dbay.teddy.main">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">任务应用ID</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="c2AppIdInput" type="text" placeholder="仅更新配置时需要,例如：application_1616006606833_39744">
                 </div>
             </div>
             <div class="form-group">
@@ -80,7 +86,7 @@
                             <td>执行Yarn队列：spark.yarn.queue</td>
                             <td><select class="form-control" id="c2YarnQueue">
                                 <option value="default">root.default</option>
-                                <option value="realtimecollect">root.hadoop.realtimecollct</option>
+                                <option value="realtimecollect">root.hadoop.realtimecollect</option>
                                 <option value="offlinetasks">root.hadoop.offlinetasks</option>
                             </select></td>
                             <!--                                    <td><input class="form-control" id="c2YarnQueue" type="text" value="default"></td>-->
@@ -92,19 +98,19 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">参数</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="c2ArgsInput" type="text" value="params">
+                    <input class="form-control" id="c2ArgsInput" type="text" placeholder="多个参数时用空格隔开">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">告警邮件抄送（多地址用英文分号‘;’隔开）</label>
+                <label class="col-sm-2 control-label">告警邮件抄送</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="c2EmailInput" type="text" value="alexanderguo@welove-inc.com;1808568252@qq.com">
+                    <input class="form-control" id="c2EmailInput" type="text"  placeholder="邮箱地址（多地址用英文分号‘;’隔开）">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">企业微信机器人（多地址用英文分号‘;’隔开）</label>
+                <label class="col-sm-2 control-label">企业微信机器人</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="c2WebhookInput" type="text"
+                    <input class="form-control" id="c2WebhookInput" type="text" placeholder="企业微信机器人（多地址用英文分号‘;’隔开）"
                            value="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=c1d6b3ea-7c27-4c40-bfaa-3c4ae3991174">
                 </div>
             </div>
@@ -143,9 +149,11 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label"> </label>
                 <div class="col-sm-10">
-                    <button type="submit" id="c2SubmitBtn" class="btn btn-default">提交</button>
+                    <button type="submit" id="c2SubmitBtn" class="btn btn-default">提交任务</button>
+                    <button type="submit" id="c2UpdateBtn" class="btn btn-default">更新配置（需手动重启）</button>
                 </div>
             </div>
+            
         </form>
     </div>
 </div>

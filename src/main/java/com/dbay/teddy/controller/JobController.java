@@ -35,9 +35,18 @@ public class JobController {
     public Response submit(@RequestBody Job   job){
         logger.warn("收到请求启动："+ job);
         if(jobService.start(job)){
-            return Response.SUCCESS("ok");
+            return Response.SUCCESS("启动成功，前往监控页面查看状态！");
         }
-        return Response.ERROR("启动失败");
+        return Response.ERROR("启动失败o(╥﹏╥)o");
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public Response update(@RequestBody Job   job){
+        logger.warn("收到请求更新："+ job);
+        if(jobService.reconfiguring(job)){
+            return Response.SUCCESS("配置已更新，前往监控页面重启！");
+        }
+        return Response.ERROR("配置更新失败o(╥﹏╥)o");
     }
 
     @RequestMapping("list")
