@@ -1,6 +1,8 @@
 package com.dbay.teddy.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.dbay.teddy.entity.App;
 import com.dbay.teddy.utils.TeddyConf;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -21,11 +23,12 @@ public class YarnService {
 
     /**
      * https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/ResourceManagerRest.html#Cluster_Application_State_API
+     *
      * @return
      */
-    public String state(String appId){
-        for(String host : TeddyConf.get("yarn.cluster").split(",")){
-            HttpGet httpGet = new HttpGet("http://"+host+"/ws/v1/cluster/apps/"+ appId + "/state");
+    public String state(String appId) {
+        for (String host : TeddyConf.get("yarn.cluster").split(",")) {
+            HttpGet httpGet = new HttpGet("http://" + host + "/ws/v1/cluster/apps/" + appId + "/state");
             httpGet.setHeader("Content-Type", "application/json");
             CloseableHttpResponse resp = null;
             try {
@@ -36,8 +39,8 @@ public class YarnService {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
-                if(resp!=null){
+            } finally {
+                if (resp != null) {
                     try {
                         resp.close();
                     } catch (IOException e) {
@@ -48,4 +51,38 @@ public class YarnService {
         }
         return "NONE";
     }
+
+    /**
+     * 获取整个APP的信息
+     *
+     * @param appId
+     * @return
+     */
+    public App app(String appId) {
+        App app = new App();
+        for (String host : TeddyConf.get("yarn.cluster").split(",")) {
+            HttpGet httpGet = new HttpGet("http://" + host + "/ws/v1/cluster/apps/" + appId);
+            httpGet.setHeader("Content-Type", "application/json");
+            CloseableHttpResponse resp = null;
+            try {
+                resp = httpclient.execute(httpGet);
+                if (resp.getStatusLine().getStatusCode() == 200) {
+                    String content = IOUtils.toString(resp.getEntity().getContent());
+                    app = JSON.parseObject(content).getObject("app", App.class);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (resp != null) {
+                    try {
+                        resp.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+        return app;
+    }
+
 }

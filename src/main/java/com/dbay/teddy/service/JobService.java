@@ -81,13 +81,13 @@ public class JobService {
         String settings = job.getConfig();
         for (String setting : StringUtils.splitByWholeSeparator(settings, ";")) {
             String[] strings = StringUtils.split(setting, "=");
+            //设置参数
             launcher.setConf(strings[0], strings[1]);
 
-            //设置yarn队列
+            //拿到yarn队列，放入list中
             if ("spark.yarn.queue".equals(strings[0])) {
                 job.setYarnQueue(strings[1]);
             }
-
         }
 
         launcher.redirectOutput(new File(TeddyConf.get("log.file")));

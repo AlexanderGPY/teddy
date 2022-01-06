@@ -18,6 +18,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 用来刷新job的状态
  * @author AlexanderGuo
  */
 @Component
@@ -44,8 +45,10 @@ public class StateRefresher implements ApplicationRunner {
                 List<Job> jobs = jobService.findAllWithAppId();
                 logger.info("监测到" + jobs.size() + "条appid不为空的task");
                 jobs.forEach(t -> {
-                    String state = yarnService.state(t.getAppId());
+                    String state = yarnService.app(t.getAppId()).getState();
+                    String totalRunningTime =yarnService.app(t.getAppId()).totalRunningTime();
                     t.setState(state);
+                    t.setTotalRunningTime(totalRunningTime);
                     jobService.update(t);
                     logger.info("更新" + t.getId() + "的状态信息为：" + state);
                 });

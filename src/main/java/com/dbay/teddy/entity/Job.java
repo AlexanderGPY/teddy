@@ -15,6 +15,7 @@ public class Job {
     private String master = "yarn";
     private String deployMode = "cluster";
     private String yarnQueue;
+    private String totalRunningTime = "NONE";
     private String args;
     private String config;
     private String email;
@@ -52,7 +53,16 @@ public class Job {
                 ", send=" + send +
                 ", restart=" + restart +
                 ", retries=" + retries +
+                ", totalRunningTime=" + totalRunningTime +
                 '}';
+    }
+
+    public String getTotalRunningTime() {
+        return totalRunningTime;
+    }
+
+    public void setTotalRunningTime(String totalRunningTime) {
+        this.totalRunningTime = totalRunningTime;
     }
 
     public Integer getId() {

@@ -34,6 +34,7 @@ public interface JobMapper {
             "master             VARCHAR(20)," +
             "deployMode      VARCHAR(20)," +
             "yarnQueue         VARCHAR(20)," +
+            "totalRunningTime         VARCHAR(30)," +
             "args               VARCHAR(3000)," +
             "config             VARCHAR(3000)," +
             "email              VARCHAR(500)," +
@@ -79,10 +80,10 @@ public interface JobMapper {
      * @param job Job
      */
     @Insert({"insert into job(" +
-            "name,appId,state,appResource,mainClass,master,deployMode,yarnQueue,args,config,email,webhook,send,restart,retries" +
+            "name,appId,state,appResource,mainClass,master,deployMode,yarnQueue,totalRunningTime,args,config,email,webhook,send,restart,retries" +
             ") values(" +
             "#{t.name}, #{t.appId}, #{t.state},#{t.appResource}, " +
-            "#{t.mainClass}, #{t.master},#{t.deployMode},#{t.yarnQueue},#{t.args},#{t.config}," +
+            "#{t.mainClass}, #{t.master},#{t.deployMode},#{t.yarnQueue},#{t.totalRunningTime},#{t.args},#{t.config}," +
             "#{t.email},#{t.webhook},#{t.send},#{t.restart},#{t.retries})"})
     void save(@Param("t") Job job);
 
@@ -111,6 +112,7 @@ public interface JobMapper {
     @Insert("update job set " +
             "appId = #{t.appId}," +
             "state  = #{t.state}," +
+            "totalRunningTime  = #{t.totalRunningTime}," +
             " retries = #{t.retries}" +
             " where id = #{t.id}")
     void update(@Param("t") Job job);
@@ -121,10 +123,10 @@ public interface JobMapper {
      * @param job Job
      */
     @Insert({"insert into job(" +
-            "name,appId,state,appResource,mainClass,master,deployMode,yarnQueue,args,config,email,webhook,send,restart,retries" +
+            "name,appId,state,appResource,mainClass,master,deployMode,yarnQueue,totalRunningTime,args,config,email,webhook,send,restart,retries" +
             ") values(" +
             "#{t.name}, #{t.appId}, #{t.state},#{t.appResource}, " +
-            "#{t.mainClass}, #{t.master},#{t.deployMode},#{t.yarnQueue},#{t.args},#{t.config}," +
+            "#{t.mainClass}, #{t.master},#{t.deployMode},#{t.yarnQueue},#{t.totalRunningTime},#{t.args},#{t.config}," +
             "#{t.email},#{t.webhook},#{t.send},#{t.restart},#{t.retries}) " +
             "on duplicate key update " +
             "name=#{t.name},appResource=#{t.appResource},mainClass=#{t.mainClass},yarnQueue=#{t.yarnQueue}," +
