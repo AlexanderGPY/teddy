@@ -26,8 +26,8 @@ public class AlertManager implements ApplicationRunner {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private EmailSender emailSender;
+//    @Autowired
+//    private EmailSender emailSender;
 
     @Autowired
     private WebHookSender webHookSender;

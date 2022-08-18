@@ -32,7 +32,7 @@ public class JobController {
     private JobService jobService;
 
     @RequestMapping(value = "submit", method = RequestMethod.POST)
-    public Response submit(@RequestBody Job   job){
+    public Response submit(@RequestBody Job job){
         logger.warn("收到请求启动："+ job);
         if(jobService.start(job)){
             return Response.SUCCESS("启动成功，前往监控页面查看状态！");

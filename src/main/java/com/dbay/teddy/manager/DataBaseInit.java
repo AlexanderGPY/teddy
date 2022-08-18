@@ -9,11 +9,11 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * derby这里有一个bug，但是在linux环境下，自动init数据库失败。
+ * derby这里有一个bug，在linux环境下，自动init数据库失败，暂时注释掉手动创建数据表。
  * @author AlexanderGuo
  */
 @Component
-public class DerbyInit implements ApplicationRunner {
+public class DataBaseInit implements ApplicationRunner {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
